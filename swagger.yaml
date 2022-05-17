@@ -10,7 +10,6 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
-    
 definitions:
   PackageDetails:
     type: "object"

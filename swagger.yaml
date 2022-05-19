@@ -30,6 +30,9 @@ definitions:
         type: "string"
         format: "date-time"
         default: null
+      defect_reason:
+        type: "string"
+        default: null
   UserAuth:
     type: "object"
     properties:
@@ -52,6 +55,12 @@ definitions:
         type: "string"
       organization_id:
         type: "string"
+      created_at:
+        type: 'string'
+        format: 'date-time'
+      created_by:
+        type: 'string'
+        format: 'email'
 paths:
   /login:
     post:

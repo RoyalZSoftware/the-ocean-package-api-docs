@@ -169,15 +169,6 @@ paths:
           name: "package_id"
           type: string
           required: true
-        - in: body
-          name: Body
-          schema:
-            type: "object"
-            properties:
-              organization_id:
-                type: "string"
-              package_id:
-                type: "string"
       responses:
         200:
           description: "OK"

@@ -19,24 +19,18 @@ paths:
       responses:
         "200":
           description: OK
-  "/v1/packages/{organization_id}":
+  "/v1/packages":
     get:
       tags:
         - Packages
       description: Retrieve all packages of organization
-      parameters:
-        - in: path
-          name: organization_id
-          required: true
-          schema:
-            type: string
       security:
         - Bearer: []
       responses:
         "200":
           description: OK
           content:
-            "*/*":
+            "application/json":
               schema:
                 type: array
                 items:
@@ -45,22 +39,16 @@ paths:
       tags:
         - Packages
       description: Creates a new package
-      parameters:
-        - in: path
-          name: organization_id
-          required: true
-          schema:
-            type: string
       security:
         - Bearer: []
       responses:
         "200":
           description: OK a new package was created.
           content:
-            "*/*":
+            "application/json":
               schema:
                 $ref: "#/components/schemas/PackageDetails"
-  "/v1/packages/{organization_id}/{package_id}":
+  "/v1/packages/{package_id}":
     delete:
       tags:
         - Packages
@@ -69,11 +57,6 @@ paths:
         - Bearer: []
       parameters:
         - in: path
-          name: organization_id
-          required: true
-          schema:
-            type: string
-        - in: path
           name: package_id
           required: true
           schema:
@@ -81,7 +64,7 @@ paths:
       responses:
         "200":
           description: OK - Package marked as defect.
-  "/v1/packages/{organization_id}/shipping_processes/{package_id}":
+  "/v1/packages/shipping_processes/{package_id}":
     get:
       security:
         - Bearer: []
@@ -89,11 +72,6 @@ paths:
         - Shipping Processes
       summary: Retrieve all shipping processes of package of organization
       parameters:
-        - in: path
-          name: organization_id
-          required: true
-          schema:
-            type: string
         - in: path
           name: package_id
           required: true
@@ -103,7 +81,7 @@ paths:
         "200":
           description: OK
           content:
-            "*/*":
+            "application/json":
               schema:
                 type: array
                 items:
@@ -118,21 +96,22 @@ paths:
         - Bearer: []
       parameters:
         - in: path
-          name: organization_id
-          required: true
-          schema:
-            type: string
-        - in: path
           name: package_id
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShippingProcessType"
       responses:
         "200":
           description: OK
 servers:
   - url: https://staging.theoceanpackage.com/api
   - url: https://app.theoceanpackage.com/api
+  - url: http://localhost:3000/api
 components:
   securitySchemes:
     Bearer:
@@ -193,3 +172,11 @@ components:
         created_by:
           type: string
           format: email
+    ShippingProcessType:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - IN
+            - OUT

@@ -19,7 +19,7 @@ paths:
       responses:
         "200":
           description: OK
-  "/packages/{organization_id}":
+  "/v1/packages/{organization_id}":
     get:
       tags:
         - Packages
@@ -60,7 +60,7 @@ paths:
             "*/*":
               schema:
                 $ref: "#/components/schemas/PackageDetails"
-  "/packages/{organization_id}/{package_id}":
+  "/v1/packages/{organization_id}/{package_id}":
     delete:
       tags:
         - Packages
@@ -81,7 +81,7 @@ paths:
       responses:
         "200":
           description: OK - Package marked as defect.
-  "/packages/{organization_id}/shipping_processes/{package_id}":
+  "/v1/packages/{organization_id}/shipping_processes/{package_id}":
     get:
       security:
         - Bearer: []

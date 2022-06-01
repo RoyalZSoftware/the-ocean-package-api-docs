@@ -64,7 +64,7 @@ paths:
       responses:
         "200":
           description: OK - Package marked as defect.
-  "/v1/packages/shipping_processes/{package_id}":
+  "/v1/packages/{package_id}/shipping_processes":
     get:
       security:
         - Bearer: []

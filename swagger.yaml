@@ -108,6 +108,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: '#/components/schemas/ShippingProcess'
 servers:
   - url: https://staging.theoceanpackage.com/api
   - url: https://app.theoceanpackage.com/api

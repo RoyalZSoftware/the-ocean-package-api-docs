@@ -4,7 +4,7 @@ info:
   description: "Api for the ocean package platform. A product to track reusable packages and their shipping processes. Please contact TheOceanPackage for test accounts. **SUBJECT TO CHANGE**"
   version: "0.1.0"
 basePath: "/api"
-host: app.theoceanpackage.com
+host: staging.theoceanpackage.com
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -36,13 +36,16 @@ definitions:
   UserAuth:
     type: "object"
     properties:
-      email:
-        type: "string"
-        format: "email"
-      password:
-        type: "string"
-        format: "password"
-        default: "password123456"
+      api_user:
+        type: "object"
+        properties:
+          email:
+            type: "string"
+            format: "email"
+          password:
+            type: "string"
+            format: "password"
+            default: "password123456"
   ShippingProcess:
     type: "object"
     properties:

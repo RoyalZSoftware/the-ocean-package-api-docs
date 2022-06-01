@@ -1,186 +1,195 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  title: "The Ocean Package"
-  description: "Api for the ocean package platform. A product to track reusable packages and their shipping processes. Please contact TheOceanPackage for test accounts. **SUBJECT TO CHANGE**"
-  version: "0.1.0"
-basePath: "/api"
-host: staging.theoceanpackage.com
-securityDefinitions:
-  Bearer:
-    type: apiKey
-    name: Authorization
-    in: header
-definitions:
-  PackageDetails:
-    type: "object"
-    properties:
-      organization_id:
-        type: "string"
-        default: 5
-      package_id:
-        type: "string"
-        default: 12
-      shipping_process_count:
-        type: "integer"
-        default: 3
-      created_by:
-        type: "string"
-        format: "email"
-      defect_at:
-        type: "string"
-        format: "date-time"
-        default: null
-      defect_reason:
-        type: "string"
-        default: null
-  UserAuth:
-    type: "object"
-    properties:
-      api_user:
-        type: "object"
-        properties:
-          email:
-            type: "string"
-            format: "email"
-          password:
-            type: "string"
-            format: "password"
-            default: "password123456"
-  ShippingProcess:
-    type: "object"
-    properties:
-      type:
-        type: 'string'
-        enum:
-          - IN
-          - OUT
-      package_id:
-        type: "string"
-      organization_id:
-        type: "string"
-      created_at:
-        type: 'string'
-        format: 'date-time'
-      created_by:
-        type: 'string'
-        format: 'email'
+  title: The Ocean Package
+  description: Api for the ocean package platform. A product to track reusable packages and
+    their shipping processes. Please contact TheOceanPackage for test accounts.
+    **SUBJECT TO CHANGE**
+  version: 0.1.0
 paths:
   /login:
     post:
-      summary: "Retrieves jwt token for users account details."
+      summary: Retrieves jwt token for users account details.
       tags:
         - Authentication
-      parameters:
-        - in: body
-          name: Body
-          schema:
-            $ref: '#/definitions/UserAuth'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuth"
       responses:
-        200:
-          description: "OK"
-  /packages/{organization_id}:
+        "200":
+          description: OK
+  "/packages/{organization_id}":
     get:
       tags:
         - Packages
-      description: "Retrieve all packages of organization"
+      description: Retrieve all packages of organization
       parameters:
         - in: path
-          name: "organization_id"
-          type: string
+          name: organization_id
           required: true
+          schema:
+            type: string
       security:
         - Bearer: []
       responses:
-        200:
-          description: "OK"
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/PackageDetails'
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PackageDetails"
     post:
       tags:
         - Packages
-      description: "Creates a new package"
+      description: Creates a new package
       parameters:
         - in: path
-          name: "organization_id"
-          type: string
+          name: organization_id
           required: true
+          schema:
+            type: string
       security:
         - Bearer: []
       responses:
-        200:
-          description: "OK a new package was created."
-          schema:
-            $ref: '#/definitions/PackageDetails'
-  /packages/{organization_id}/{package_id}:
+        "200":
+          description: OK a new package was created.
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/PackageDetails"
+  "/packages/{organization_id}/{package_id}":
     delete:
       tags:
         - Packages
-      description: "Marks package as defect"
+      description: Marks package as defect
       security:
         - Bearer: []
       parameters:
         - in: path
-          name: "organization_id"
-          type: string
-          required: true
-        - in: path
-          name: "package_id"
-          type: string
-          required: true
-        - in: body
-          name: "body"
+          name: organization_id
           required: true
           schema:
-            type: "object"
-            properties:
-              reason:
-                type: "string"
-                default: "Ecke abgerissen"
+            type: string
+        - in: path
+          name: package_id
+          required: true
+          schema:
+            type: string
       responses:
-        200:
-          description: "OK - Package marked as defect."
-  /packages/{organization_id}/shipping_processes/{package_id}:
+        "200":
+          description: OK - Package marked as defect.
+  "/packages/{organization_id}/shipping_processes/{package_id}":
     get:
       security:
         - Bearer: []
       tags:
-        - 'Shipping Processes'
-      summary: "Retrieve all shipping processes of package of organization"
+        - Shipping Processes
+      summary: Retrieve all shipping processes of package of organization
       parameters:
         - in: path
-          name: "organization_id"
-          type: string
+          name: organization_id
           required: true
-        - in: path
-          name: "package_id"
-          type: string
-          required: true
-      responses:
-        200:
-          description: "OK"
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/ShippingProcess"
-        404:
-          description: "Not found"
+            type: string
+        - in: path
+          name: package_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShippingProcess"
+        "404":
+          description: Not found
     post:
-      summary: "Create a new shipping processes"
+      summary: Create a new shipping processes
       tags:
-        - 'Shipping Processes'
+        - Shipping Processes
       security:
         - Bearer: []
       parameters:
         - in: path
-          name: "organization_id"
-          type: string
+          name: organization_id
           required: true
+          schema:
+            type: string
         - in: path
-          name: "package_id"
-          type: string
+          name: package_id
           required: true
+          schema:
+            type: string
       responses:
-        200:
-          description: "OK"
+        "200":
+          description: OK
+servers:
+  - url: https://staging.theoceanpackage.com/api
+  - url: https://app.theoceanpackage.com/api
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    PackageDetails:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          default: 5
+        package_id:
+          type: string
+          default: 12
+        shipping_process_count:
+          type: integer
+          default: 3
+        created_by:
+          type: string
+          format: email
+        defect_at:
+          type: string
+          format: date-time
+          default: null
+        defect_reason:
+          type: string
+          default: null
+    UserAuth:
+      type: object
+      properties:
+        api_user:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+              format: password
+              default: password123456
+    ShippingProcess:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - IN
+            - OUT
+        package_id:
+          type: string
+        organization_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          format: email
